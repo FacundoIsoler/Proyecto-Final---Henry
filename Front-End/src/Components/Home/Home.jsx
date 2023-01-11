@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import style from "../Home/Home.module.css"
 
+import { useAuth0 } from "@auth0/auth0-react";
 
-import { getServices, searchingFalse, searchingServices, sendContractNotification } from '../../actions/index.js';
+import { getServices, getSuppliers, getUserDetails, searchingFalse, searchingServices, sendContractNotification } from '../../actions/index.js';
 
 // import { Servicios } from '../../Mockup/Servicios.js';
 import Index from '../Index/Index.jsx';
@@ -32,7 +33,7 @@ React.useEffect(() => {
   const indexOfFirstService = indexOfLastService - servicesPerPage//0
   const currentServices = allServices.slice(indexOfFirstService, indexOfLastService)
 
-
+  const { user } = useAuth0();
 
   // const estadoLocalVacío = () => { setServicesPerPage() };
 
@@ -66,15 +67,17 @@ React.useEffect(() => {
     //
 
   useEffect(() => {
+    if(user) dispatch(getUserDetails(user.id, true));
     dispatch(getServices());
+    dispatch(getSuppliers());
     dispatch(searchingServices()); //settea un estado global para que la barra de busqueda busque servicios
-  }, [dispatch])
+  }, [dispatch, user])
 
   useEffect(() => {
     setCurrentPage(1); //Cada vez que el estado cambie setea la pagina 1
   }, [allServices])
 
-  // console.log(currentServices)
+
 
   return (
     <div className={style.general}>
@@ -102,8 +105,9 @@ React.useEffect(() => {
             {/* <div>servicios</div> */}
             <div className={style.cards}>
               {currentServices?.map(service => {
+                
                 return (
-                  <ServicesCard id={service.id} name={service.serviceType} price={service.pricePerHour} description={service.description} image={service.representative_image} disponible={service.disponible}
+                  <ServicesCard id={service.id} name={service.serviceType} price={service.pricePerHour} description={service.description} image={service.representative_image} disponible={service.disponible} amount = {service.amount} key={service.id}
                   />
                 )
               })}

@@ -39,8 +39,6 @@
 .container2{
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-
     align-items: center;
     text-align: start;
 
@@ -63,3 +61,17 @@
  .p{
     color:white;
  }
+
+ @media(max-width:1015px){
+    .container{
+        width: auto;
+        height: auto;
+    }
+    .container4{
+        width: auto;
+    }
+    .container3{
+        margin-left: 10px;
+        margin-right: 7px;
+    }
+}

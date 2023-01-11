@@ -5,11 +5,15 @@ import { getContracts } from "../../../actions";
 import s from './ContractList.module.css';
 import { useState } from "react";
 import Index from '../../Index/Index.jsx';
+import { Link } from 'react-router-dom';
 
 export default function ContractList () {
 
   const dispatch = useDispatch();
   const {user} = useAuth0();
+
+  const userLog = useSelector(state => state.userLog);
+  const role = user.user_role || userLog;
 
   const allContracts = useSelector(state => state.contracts);
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,10 +31,10 @@ export default function ContractList () {
     setCurrentPage(pageNumber)
   }
   
-  if(user.user_role === "Admin" || user.user_role === "SuperAdmin"){
+  if(role === "Admin" || role === "SuperAdmin"){
     myContracts = allContracts;
   }else{
-    myContracts = allContracts.filter( contract => contract.User.id === parseInt(user.id));
+    myContracts = allContracts.filter( contract => contract.User !== null).filter( contract => contract.User.id === parseInt(user.id));
   }
 
   //PAginacion
@@ -48,9 +52,9 @@ export default function ContractList () {
 
   return(
     <div>
-      {user.user_role === "Admin" || user.user_role === "SuperAdmin" ? 
-      <h3>Lista de contratos</h3>: 
-      <h3>Lista de contratos realizados</h3>}
+      {role === "Admin" || role === "SuperAdmin" ? 
+      <h2>Lista de contratos</h2>: 
+      <h2>Lista de contratos realizados</h2>}
 
         {myContracts.length > 0 ? <Index
         servicesPerPage={contractsPerPage}
@@ -61,7 +65,8 @@ export default function ContractList () {
       <div className={s.container}>
 
         {myContracts.length > 0 ? currentContracts.map( contract => {
-          return <div className={s.card}>
+
+          return <Link to={`/profile/contract/${contract.id}`}><div className={s.card}>
             <div>
               <b>Id Contrato: </b><span>{contract.id}</span>
             </div>
@@ -69,15 +74,18 @@ export default function ContractList () {
               <b>Proveedor: </b><span>{contract.Supplier.name}</span>
             </div>
             <div>
-              <b>Cliente: </b><span>{contract.User.userName}</span>
+              <b>Cliente: </b><span>{contract.User ? contract.User.userName : null}</span>
             </div>  
             <div>
               <b>Fecha de creación: </b><span>{contract.date}</span>
             </div>
-          </div> 
+            <div>
+              <b>Estado: </b><span>{contract.status}</span>
+            </div>
+          </div></Link> 
         }) : <div>
                 <br/>
-                <h4>No has realizado ningún pedido</h4>
+                <h3>No has realizado ningún pedido</h3>
               </div>  
                 }
 

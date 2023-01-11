@@ -28,7 +28,7 @@ router.post("/", (req, res) => {
                 /* description: item.brand,
                  picture_url: item.image,
                  category_id: item.gender,*/
-                quantity: 1,
+                quantity: item.amount,
                 //  currency_id: "COP",
                 unit_price: Number(item.pricePerHour),
             };

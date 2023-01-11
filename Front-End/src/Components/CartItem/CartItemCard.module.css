@@ -20,6 +20,25 @@
       padding: 1rem;
       
 }
+.contenedorPrecios{
+    display: flex;
+          padding: 1rem;
+      
+}
+.contenedorPrecios h5{
+    display: flex;
+          padding: 1rem;
+          font-size: xx-small;
+          
+      
+}
+.contenedorPrecios p{
+    display: flex;
+    font-size: small;
+    padding-top: 1.2rem;
+          
+      
+}
 .contenedor p{
     padding-left: 0.50rem;
 }

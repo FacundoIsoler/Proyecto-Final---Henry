@@ -1,8 +1,56 @@
 
     .container{
         margin: 4% 0;
+        background-color: transparent;
+        border: 1px solid rgb(228, 228, 228);
+        border-radius: 20px;
+        width: 40rem;
+        margin-left: 22rem;
+        margin-top: 3rem;
+        padding: 2em;
       }
 
     .error {
         color: red;    
         }
+
+
+    .order{
+      display: flex;
+      flex-direction: row;
+   
+    }
+
+    .ul{
+      list-style: none;
+      color:black;
+    }
+
+    .total {
+      display: flex;
+      color:black;
+      text-shadow: #CCC 1px 0 10px;
+    
+    }
+
+    .linea {
+      border-top: 1px solid rgb(228, 228, 228);
+      height: 2px;
+      width: 100%;
+      padding: 0;
+      margin: 20px auto 0 auto;
+    }
+
+    .background{
+      display: flex;
+
+    }
+
+    .text{
+      color: black;
+    }
+
+    .msj{
+      color: black;
+      font-weight: bolder;
+    }

@@ -60,7 +60,10 @@
     /* background-color: black; */
     display: flex;
     align-items: center;
-    padding-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 
   }
 
@@ -130,3 +133,66 @@
         color:white;
         text-shadow: -1px -1px 5px rgb(0 0 0), 1px 1px 5px rgb(57 39 18);
   }
+
+  @media(max-width:664px){
+    .detail_container{
+      align-items: center;
+    }
+  }
+
+  .flex{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    background-color: rgba(0, 0, 0, 0.315);
+    margin-bottom: 3%;
+    border-radius: 20px;
+  }
+
+  .authorized{
+    color: green;
+  }
+
+  .noAuthorized{
+    color: red;
+  }
+
+  .adminButton{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
+  .textFlex{
+    display: flex;
+    padding: 2%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .button{
+    width: fit-content;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius:5px;
+    margin: 0.5em;
+    padding: 0.5em;
+    background-color: rgb(19, 86, 231);
+    border: none;
+    color: white;
+    text-shadow: -1px -1px 5px rgb(0 0 0), 1px 1px 5px rgb(57 39 18);
+    
+}
+
+.button:hover {
+    background-color: rgb(23, 132, 221);
+}
+  
+.goBack{
+  background: transparent;
+  background-image: url('https://cdn-icons-png.flaticon.com/128/2099/2099190.png');
+  background-size: cover;
+  background-position: center;
+  width: 10%;
+  border: none;
+  height: 50px;
+}

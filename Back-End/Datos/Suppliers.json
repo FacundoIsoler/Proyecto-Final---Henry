@@ -111,169 +111,202 @@
     {
         "name": "fumysam",
         "cuit": 30154698520,
-        "description": "Desinfección y Fumigación de hogares, industrias y todo tipo de establecimiento"
+        "description": "Desinfección y Fumigación de hogares, industrias y todo tipo de establecimiento",
+        "isAuthorized": false
     },
     {
         "name": "Agron S.A.",
         "cuit": 30112561230,
-        "description": "Desmalezamiento, poda, extracción y colocación de árboles y plantas"
+        "description": "Desmalezamiento, poda, extracción y colocación de árboles y plantas",
+        "isAuthorized": false
     },
 {
         "name": "Parquizaciones S.R.L.",
         "cuit": 30456236470,
-        "description": "Paisajismo de jardines"
+        "description": "Paisajismo de jardines",
+        "isAuthorized": false
     },
 {
         "name": "Best Garden S.A.",
         "cuit": 30124874870,
-        "description": "Paisajismo de jardines"
+        "description": "Paisajismo de jardines",
+        "isAuthorized": false
     },
 {
         "name": "Todo Jardín.",
         "cuit": 30242402400,
-        "description": "Jardinería en general"
+        "description": "Jardinería en general",
+        "isAuthorized": false
     },
 {
         "name": "Natural green",
         "cuit": 30363653210,
-        "description": "Jardinería en general"
+        "description": "Jardinería en general",
+        "isAuthorized": false
     },
 {
         "name": "BuresPRO",
         "cuit": 30213216540,
-        "description": "Jardinería en general"
+        "description": "Jardinería en general",
+        "isAuthorized": false
     },
 {
         "name": "mcc-servicios",
         "cuit": 30257897890,
-        "description": "Mantenimiento edilicio integral: albañilería, electricidad, plomería, construcción, reparaciones en general."
+        "description": "Mantenimiento edilicio integral: albañilería, electricidad, plomería, construcción, reparaciones en general.",
+        "isAuthorized": false
     },
 {
         "name": "Plomería Huba",
         "cuit": 30259877890,
-        "description": "Proveemos plomeros matriculados para solucionar cualquier problema"
+        "description": "Proveemos plomeros matriculados para solucionar cualquier problema",
+        "isAuthorized": false
     },
 
     {
         "name": "Servicios Hogar",
         "cuit": 30236544560,
-        "description": "Plomeros,  gasistas y electricistas matriculados"
+        "description": "Plomeros,  gasistas y electricistas matriculados",
+        "isAuthorized": false
     },
 {
         "name": "Gasfiter",
         "cuit": 30227418520,
-        "description": "Plomeros matriculados"
+        "description": "Plomeros matriculados",
+        "isAuthorized": false
     },
 {
         "name": "Servicio Eléctrico S.A.",
         "cuit": 30221473690,
-        "description": "Electricistas matriculados. Aire Acondicionado."
+        "description": "Electricistas matriculados. Aire Acondicionado.",
+        "isAuthorized": false
     },
 {
         "name": "GWC S.R.L.",
         "cuit": 30174569870,
-        "description": "Plomeros,  gasistas y electricistas matriculados"
+        "description": "Plomeros,  gasistas y electricistas matriculados",
+        "isAuthorized": false
     },
 {
         "name": "Home Solution S.A.",
         "cuit": 30196325410,
-        "description": "Plomeros,  gasistas y electricistas matriculados"
+        "description": "Plomeros,  gasistas y electricistas matriculados",
+        "isAuthorized": false
     },
 {
         "name": "Servicios Solisr",
         "cuit": 30142583690,
-        "description": "Plomeros y  gasistas matriculados"
+        "description": "Plomeros y  gasistas matriculados",
+        "isAuthorized": false
     },
 {
         "name": "Will Fix It",
         "cuit": 30148529630,
-        "description": "Servicio de Plomería"
+        "description": "Servicio de Plomería",
+        "isAuthorized": false
     },
     {
         "name": "Varela S.A.",
         "cuit": 30224563210,
-        "description": "Servicio de Plomería"
+        "description": "Servicio de Plomería",
+        "isAuthorized": false
     },
 {
         "name": "Visymo S.R.L",
         "cuit": 30217531590,
-        "description": "Plomeros,  gasistas y electricistas matriculados"
+        "description": "Plomeros,  gasistas y electricistas matriculados",
+        "isAuthorized": false
     },
 {
         "name": "La cuarta",
         "cuit": 30117897890,
-        "description": "Servicios de construcción en general"
+        "description": "Servicios de construcción en general",
+        "isAuthorized": false
     },
 {
         "name": "Multiservicios Precisur",
         "cuit": 30208522580,
-        "description": "Albañilería, mampostería, durlock, instalaciones eléctricas, pintura, construcción en general"
+        "description": "Albañilería, mampostería, durlock, instalaciones eléctricas, pintura, construcción en general",
+        "isAuthorized": false
     },
 {
         "name": "Hacemos servicio",
         "cuit": 30201546320,
-        "description": "Construcciones, refacciones y pintura."
+        "description": "Construcciones, refacciones y pintura.",
+        "isAuthorized": false
     },
 {
         "name": "Multiservicios Cano",
         "cuit": 30114521240,
-        "description": "Albañilería, mampostería, durlock, instalaciones eléctricas, pintura, construcción en general"
+        "description": "Albañilería, mampostería, durlock, instalaciones eléctricas, pintura, construcción en general",
+        "isAuthorized": false
     },
 {
         "name": "Prima Group",
         "cuit": 30142113330,
-        "description": "Consultora de construcción"
+        "description": "Consultora de construcción",
+        "isAuthorized": false
     },
 {
         "name": "Proytek",
         "cuit": 30128889990,
-        "description": "Albañilería, mampostería, durlock, instalaciones eléctricas, pintura, construcción en general"
+        "description": "Albañilería, mampostería, durlock, instalaciones eléctricas, pintura, construcción en general",
+        "isAuthorized": false
     },
 {
         "name": "Placo",
         "cuit": 30126665550,
-        "description": "Soluciones con Durlock"
+        "description": "Soluciones con Durlock",
+        "isAuthorized": false
     },
 
     {
         "name": "Hiperplaca",
         "cuit": 30122223330,
-        "description": "Solución a la humedad con placas de Durlock"
+        "description": "Solución a la humedad con placas de Durlock",
+        "isAuthorized": false
     },
 {
         "name": "Durbeck",
         "cuit": 30124568880,
-        "description": "Construcción con Durlock"
+        "description": "Construcción con Durlock",
+        "isAuthorized": false
     },
 {
         "name": "DyD servicios",
         "cuit": 30124568880,
-        "description": "Servicios de electricidad de la mano de los mejores profesionales"
+        "description": "Servicios de electricidad de la mano de los mejores profesionales",
+        "isAuthorized": false
     },
 {
         "name": "tserpro",
         "cuit": 30122318520,
-        "description": "Instalación y mantenimiento de la electricidad el hogar"
+        "description": "Instalación y mantenimiento de la electricidad el hogar",
+        "isAuthorized": false
     },
 {
         "name": "Santa Madera S.A.",
         "cuit": 30124445550,
-        "description": "Reparaciones de aberturas y muebles de cualquier tipo de madera"
+        "description": "Reparaciones de aberturas y muebles de cualquier tipo de madera",
+        "isAuthorized": false
     },
 {
         "name": "ARDICCO",
         "cuit": 30126667450,
-        "description": "Servicio integral de la madera. Construcción de techos, muebles y aberturas. Mantenimiento"
+        "description": "Servicio integral de la madera. Construcción de techos, muebles y aberturas. Mantenimiento",
+        "isAuthorized": false
     },
 {
         "name": "Alianza Constructiva",
         "cuit": 30122223560,
-        "description": "Trabajos profesionales de madera. Carpintería en general"
+        "description": "Trabajos profesionales de madera. Carpintería en general",
+        "isAuthorized": false
     },
 {
         "name": "Telplast S.R.L.",
         "cuit": 30122223360,
-        "description": "Trabajos con madera y metal. Carpintería y Herrería"
+        "description": "Trabajos con madera y metal. Carpintería y Herrería",
+        "isAuthorized": false
     },
 {
         "name": "Herrería MF",

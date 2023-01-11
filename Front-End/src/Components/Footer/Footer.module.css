@@ -33,11 +33,11 @@
   color: black;
 }
 
-@media (max-width: 445px){
+/* @media (max-width: 445px){
   .carrusel {
     margin-left: 10%
   }
-}
+} */
 
 @media (min-width: 445px) and (max-width: 768px) {
   .carrusel{

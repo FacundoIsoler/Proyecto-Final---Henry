@@ -15,9 +15,16 @@ export default function NavBar() {
   const { user, isLoading, isAuthenticated } = useAuth0();
   const [userRole, setUserRole] = useState("User");
 
+  const userLog = useSelector(state => state.userLog);
+  let role;
+  if(user) role = userLog;
+
   useEffect(() => {
-    if (!isLoading && isAuthenticated && user.user_role) setUserRole(user.user_role);
-  }, [isLoading, isAuthenticated, user]);
+    if (!isLoading && isAuthenticated && role) setUserRole(role);
+  }, [isLoading, isAuthenticated, role]);
+
+  console.log(userRole)
+  console.log(role)
 
 
   return (
@@ -38,19 +45,19 @@ export default function NavBar() {
             ></button>
             <ul className="dropdown-menu">
               <li>
-                <a className="dropdown-item" href="/suppliers">
-                  Cartilla de proveedores
-                </a>
+                <NavLink to="/suppliers" className="dropdown-item">
+              <span>Cartilla de proveedores</span>
+              </NavLink>
               </li>
               <li>
-                <a className="dropdown-item" href="/contact">
-                  Contacto
-                </a>
+              <NavLink to="/contact" className="dropdown-item">
+              <span>Contacto</span>
+              </NavLink>
               </li>
-              {userRole === "Supplier" ? <li>
-                <a className="dropdown-item" href="/suppliersContact">
-                  Publicá tu servicio
-                </a>
+              {userRole === "User" ? <li>
+              <NavLink to="/suppliersContact" className="dropdown-item">
+              <span>Publicá tu empresa</span>
+              </NavLink>
               </li> : ""}
             </ul>
           </div>
@@ -76,7 +83,7 @@ export default function NavBar() {
           </NavLink>
 
           {
-            userRole === "Supplier" ?
+            userRole === "User" ?
               <NavBarSupplier />
               : ""
           }
@@ -84,7 +91,7 @@ export default function NavBar() {
           <div className={`${Style.nav_right} d-flex justify-content-end col`}>
             <Searchbar />
             <Login></Login>
-            {isAuthenticated && user.user_role !== "Supplier" ?
+            { role !== "Supplier" ?
               <NavLink
                 to="/cart"
                 className={({ isActive }) =>

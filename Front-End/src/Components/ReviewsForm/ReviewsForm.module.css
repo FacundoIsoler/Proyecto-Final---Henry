@@ -11,7 +11,7 @@
 
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 
 
   background-color: rgb(12, 105, 212);
@@ -28,8 +28,13 @@
   margin: auto;
 }
 
+.services select{
+  width: 100%;
+}
+
 .textArea{
   resize: none;
+  width: 100%;
 }
 
 .title{

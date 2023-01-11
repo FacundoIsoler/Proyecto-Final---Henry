@@ -1,0 +1,17 @@
+.card{
+  margin: 1%;
+  padding: 1%;
+  border-radius: 15px;
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap:wrap;
+  flex-direction: row;
+  color: black;
+}
+
+.card:hover{
+  background-color: grey;
+  color: white;
+  outline: 1px solid white;
+}

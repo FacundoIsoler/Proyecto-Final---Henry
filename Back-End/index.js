@@ -119,6 +119,15 @@ conn
 
       for (let i = 0; i < cant; i++) {
         const user = await User.findOne({ order: fn("random") });
+        const service = await Service.findOne({ 
+            order: fn("random") ,
+            include: {
+                model: Supplier,
+                where: {
+                    id :  dbSS.Supplier.id
+                }
+              },
+        });
 
         const newContract = await Contract.create({
           date: Date.now(),
@@ -135,6 +144,7 @@ conn
           UserId: user.id,
           ContractId: newContract.id,
           SupplierId: dbSS.Supplier.id,
+          ServiceId: service.dataValues.id
         });
       }
     }

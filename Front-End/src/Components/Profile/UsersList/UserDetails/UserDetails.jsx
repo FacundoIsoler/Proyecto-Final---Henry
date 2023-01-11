@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useNavigate} from "react-router-dom";
-import { deleteUser, getUserDetails, updateUser } from "../../../../actions";
+import { deleteUser, getUserDetails, updateUser, updateImageProfile } from "../../../../actions";
 import s from "./UserDetails.module.css";
 
 import { useAuth0 } from "@auth0/auth0-react";
@@ -27,8 +27,15 @@ export default function UserDetails () {
     eMail: "",
     adress: "",
     location: "",
-    phoneNumber: ""
+    phoneNumber: "",
+ 
   })
+
+  const userLog = useSelector(state => state.userLog)
+  const role = user.user_role || userLog;
+
+  console.log(role, "ROL")
+
   console.log(inputs, "PRIMER IMP")
 
   useLayoutEffect( ( ) => {       // useLayoutEffect => componentDidMount  
@@ -74,6 +81,9 @@ export default function UserDetails () {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(updateUser(inputs));
+    const imageForm = document.getElementById('images');
+    const formData = new FormData(imageForm);
+    dispatch(updateImageProfile(query[1],formData));
     navigate(-1);
   }
 
@@ -85,6 +95,8 @@ export default function UserDetails () {
     navigate(-1);
   }
 
+
+
   return (
     <>
     {details.length > 0 ? <div className={s.container}>
@@ -92,21 +104,21 @@ export default function UserDetails () {
         <button className={s.returnButton} onClick={() => navigate(-1)}>Regresar</button>
         <div className={s.options} hidden={noEditable ? false : true}>
           
-          {(user.user_role !== "SuperAdmin" && details[0].UserRol.name !== "SuperAdmin") ||
-          [user.user_role === "SuperAdmin"] ? 
+          {(role !== "SuperAdmin" && details[0].UserRol.name !== "SuperAdmin") ||
+          (role === "SuperAdmin") ? 
           <button className={s.optionsButton} onClick={() => {
             setNoEditable( () => false)
           }}>Editar</button> : null}
 
-          {(((user.user_role !== "Admin" && details[0].UserRol.name !== "SuperAdmin") && 
+          {(((details[0].UserRol.name !== "SuperAdmin") && 
           parseInt(user.id) !== details[0].id)) ||
-          (user.user_role === "SuperAdmin" && details[0].id !== parseInt(user.id)) ? 
+          (role === "SuperAdmin" && details[0].id !== parseInt(user.id)) ? 
           <button className={s.optionsButton} onClick={(e) => deleteHandler(e)}>Eliminar usuario</button>
           : null}
 
         </div>
       </div>
-      <form className={s.card} onSubmit={(e) => submitHandler(e)}>
+      <form className={s.card} enctype="multipart/form-data" id='images' onSubmit={(e) => submitHandler(e)}>
         <div className={s.form}>
           <div className={s.data}>
             <div className={s.item}>
@@ -148,7 +160,10 @@ export default function UserDetails () {
         </div>
         <div className={s.picture}>
           <img src={details[0].picture} alt="user" />
+          <br></br>
+          <input class="form-control form-control-sm" id="formFileSm" type="file" name='image' hidden={noEditable ? true : false} />
         </div>
+        
       </form>
     </div>: "PONER UN LOADING"}
     </>

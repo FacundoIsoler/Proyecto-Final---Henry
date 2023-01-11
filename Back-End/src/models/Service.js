@@ -29,6 +29,10 @@ module.exports = (sequelize) => {
       disponible:{
         type: DataTypes.BOOLEAN,
         defaultValue:true
+      },
+      amount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1
       }
     },
     {

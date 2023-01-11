@@ -8,6 +8,7 @@ const {
 } = require("../controllers/cloudinaryController");
 const fs = require("fs-extra");
 const { jwtCheck } = require("../auth");
+const { DuplicatedRecord } = require("../errors");
 
 const router = Router();
 
@@ -63,11 +64,10 @@ router.post("/login", async (req, res, next) => {
     try {
       let user = await UserController.findByEmail(email);
 
-      if (!user) {
-        // No existe el usuario
-        // Crear User
-        user = await UserController.add(event.user);
-      }
+      // No existe el usuario
+      // Crear User
+      if (!user) user = await UserController.add(event.user);
+
       loginId = user.id;
 
       // Debemos crear un nuevo UserLogin
@@ -87,6 +87,13 @@ router.post("/login", async (req, res, next) => {
   try {
     const user = await UserController.update(loginId, event.user);
   } catch (error) {
+    // existe el usuario, pero el user_login pertenece a otro
+    // esto pasaria si hay coinciden event.user.user_id (me di cuenta haciendo testing en postman)
+    if (error instanceof DuplicatedRecord)
+      return res
+        .status(400)
+        .json({ error: "OAuth string provided belongs to another user" });
+
     console.error("POST /users/login UserController.update error");
     return next(error);
   }

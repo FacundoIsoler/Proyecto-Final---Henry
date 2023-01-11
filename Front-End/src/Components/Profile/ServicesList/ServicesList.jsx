@@ -6,9 +6,13 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Index from "../../Index/Index.jsx";
 
-export default function ServicesList () {
+export default function ServicesList ({openModal}) {
 
+  console.log(openModal)
   const {user} = useAuth0();
+  const userLog = useSelector(state => state.userLog);
+  const role = user.user_role || userLog;
+
   const allServices = useSelector(state => state.allServices);
   const allContracts = useSelector(state => state.contracts);
 
@@ -23,13 +27,12 @@ export default function ServicesList () {
     setCurrentPage(pageNumber)
   }
 
-  if(user.user_role === "Admin" || user.user_role === "SuperAdmin"){
+  if(role === "Admin" || role === "SuperAdmin"){
     myServices = allServices
   }else{
     
-    console.log(typeof allServices[0].Suppliers.SupplierService.id, "element")
-      const myContracts = allContracts.filter( contract => contract.User.id === parseInt(user.id)); //Busca los contratos que ha hecho el usuario
-      const contractsSupplierId = myContracts.map( contract => contract.SupplierServiceId); //Busca el id del SupplierService de los contratos del usuario
+      const myContracts = allContracts.filter(contract => contract.User !== null).filter( contract => contract.User.id === parseInt(user.id)); //Busca los contratos que ha hecho el usuario
+      const contractsSupplierId = myContracts.filter(contract => contract.User !== null).map( contract => contract.SupplierServiceId); //Busca el id del SupplierService de los contratos del usuario
       contractsSupplierId.forEach( service => {             //Compara los los contractSupplierId con cada servicio para obtener los servicios contratados por el usuario
         const aux = allServices.find( element => {
           return element.Suppliers.SupplierService.id === parseInt(service)
@@ -51,10 +54,15 @@ export default function ServicesList () {
 
   return(
     <div>
-      {user.user_role === "Admin" ||
-      user.user_role === "SuperAdmin" ?
-      <h3>Lista de servicios</h3> :
-      <h3>Lista de servicios contratados</h3>}
+
+      { role === "Admin" || role === "SuperAdmin" ? <div className={s.new}>
+        <button className={s.button} onClick={() => openModal(true)}>Agregar nuevo servicio</button>
+      </div>: null}
+
+      {role === "Admin" ||
+      role === "SuperAdmin" ?
+      <h2>Lista de servicios</h2> :
+      <h2>Lista de servicios contratados</h2>}
 
         {myServices.length > 0 ?
         <Index
@@ -66,21 +74,25 @@ export default function ServicesList () {
       {/* Poner Solo admin: */}
       <div className={s.container}>
 
-        {myServices ? currentServices.map( element => {
-              return <Link to={"/services/" + element.id}><div className={s.card}>
-          <div>
-              <b>Id: </b><span>{element.id}</span>
-            </div>
-            <div>
-              <b>Tipo de servicio: </b><span>{element.serviceType}</span>
-            </div>
-            <div>
-              <b>Categoría: </b><span>{element.Category.name}</span>
-            </div>
-          </div></Link>
-        }): null}
+        {myServices.length > 0 ? currentServices.map( element => {
+            return <Link to={"/services/" + element.id}>
+                      <div className={s.card}>
+                        <div>
+                            <b>Id: </b><span>{element.id}</span>
+                          </div>
+                          <div>
+                            <b>Tipo de servicio: </b><span>{element.serviceType}</span>
+                          </div>
+                          <div>
+                            <b>Categoría: </b><span>{element.Category.name}</span>
+                          </div>
+                      </div>
+                    </Link>
+        }): <h3>No has contratado servicios...</h3>}
+
 
       </div>
+
     </div>
   )
 }

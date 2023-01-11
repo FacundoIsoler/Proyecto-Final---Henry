@@ -45,7 +45,7 @@ export default function CategoriesList () {
       <div className={s.container}>
 
         <div className={s.data}>
-          { !input.editActive ? <button onClick={(e) => {
+          { !input.editActive ? <button className={s.button} onClick={(e) => {
             editHandler(e);
           }}>Agregar nueva Categoria</button> : null}
 
@@ -57,7 +57,7 @@ export default function CategoriesList () {
             className={s.catInput}>
             </input>
 
-            <button className={s.addButton} onClick={(e) => {
+            <button className={`${s.addButton} ${s.button}`} onClick={(e) => {
               let sendData = { newCategory: input.category}
               dispatch(addCategory(sendData))
               editHandler(e);

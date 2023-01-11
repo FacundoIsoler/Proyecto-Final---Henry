@@ -1,10 +1,11 @@
 const { Router } = require("express");
 const ContractController = require("../controllers/ContractController");
+const {assignSupplier} = require('../controllers/StockController');
+const { ResourceNotFound } = require("../errors");
 
 const router = Router();
 
 router.get("/:id?", async (req, res, next) => {
-  //code
   const { id } = req.params;
   const { supplier, user, date } = req.query;
 
@@ -30,21 +31,35 @@ router.get("/:id?", async (req, res, next) => {
 });
 
 router.post("/", async (req, res, next) => {
-  const { date, SupplierServiceId, SupplierId, UserId } = req.body;
+  
+console.log('body de contracts',req.body)
+let {userId} = req.body;
+let {id, amount} = req.body.cart;
+let {receiptId} = req.body;
 
-  if (!date || !SupplierServiceId || !SupplierId || !UserId)
+let date = new Date();
+let ServiceId = id;
+
+
+  if ( !ServiceId || !userId )
     return res
       .status(400)
       .json({ error: "Faltan datos obligatorios por cargar" });
+  
+  var SupplierServiceId = await assignSupplier(ServiceId, amount);//Supplier asignado
+  
+  const newContract = { date, SupplierServiceId, userId, receiptId };
 
-  const newContract = { date, SupplierServiceId, SupplierId, UserId };
-
+  
   try {
+    
     const dbContract = await ContractController.add(newContract);
 
     return res.status(201).json(dbContract);
   } catch (error) {
-    // TODO: deberiamos capturar errores de ID
+    if (error instanceof ResourceNotFound)
+      return res.status(400).json({ error: `${error.data.model} inexistente` });
+
     console.error("POST /contracts ContractController.add error");
 
     next(error);
@@ -53,21 +68,24 @@ router.post("/", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
   const { id } = req.params;
-  const { date, SupplierServiceId, SupplierId, UserId } = req.body;
+  const { date, SupplierServiceId, UserId, status } = req.body;
 
-  if (!id || !date || !SupplierServiceId || !SupplierId || !UserId)
+  if (!id) return res.status(400).send();
+  if (!date && !SupplierServiceId && !UserId && !status)
     return res
       .status(400)
       .json({ error: "Faltan datos obligatorios por cargar" });
 
-  const dataContract = { date, SupplierServiceId, SupplierId, UserId };
+  const dataContract = { date, SupplierServiceId, UserId, status };
 
   try {
     const dbContract = await ContractController.update(id, dataContract);
 
     return res.status(200).json(dbContract);
   } catch (error) {
-    // TODO: deberiamos capturar errores de ID
+    if (error instanceof ResourceNotFound)
+      return res.status(404).json({ error: `${error.data.model} inexistente` });
+
     console.error("PUT /contracts ContractController.update error");
 
     next(error);
@@ -84,7 +102,9 @@ router.delete("/:id", async (req, res, next) => {
 
     return res.status(200).send();
   } catch (error) {
-    // TODO: deberiamos capturar errores de ID
+    if (error instanceof ResourceNotFound)
+      return res.status(404).json({ error: `${error.data.model} inexistente` });
+
     console.error("DELETE /contracts ContractController.remove error");
 
     next(error);

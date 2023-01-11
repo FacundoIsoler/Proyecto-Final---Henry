@@ -11,6 +11,7 @@ import { ServicesCard } from '../ServicesCard/ServicesCard'
 export const Services = () => {
   let dispatch = useDispatch()
   let services = useSelector((state) =>state.services )
+  console.log(services)
 
   React.useEffect(
     ()=>{
@@ -24,7 +25,7 @@ export const Services = () => {
   const servicesMap = services.map((service) => { 
    
     return <ServicesCard
-    name={service.serviceType} price={service.pricePerHour} description={service.description} id={service.CategoryId} img={service.representative_image} disponible={service.disponible}/>})
+    name={service.serviceType} price={service.pricePerHour} description={service.description} id={service.CategoryId} img={service.representative_image} disponible={service.disponible} amount={service.amount}/>})
 
   return (
     <div className={s.contenedor}>

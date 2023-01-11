@@ -1,4 +1,4 @@
-const {Service, Supplier, Category, Op, conn} = require('../db.js');
+const {Service, Supplier, Category, Op} = require('../db.js');
 const { Router } = require('express');
 const router = Router();
 
@@ -90,7 +90,7 @@ router.get('/:id', async (req, res) => {
         },
           include: [{
             model: Supplier,
-            attributes: ["name"]
+            attributes: ["name", "stock", "isAuthorized"]
           },
           {
             model: Category,
@@ -108,87 +108,81 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// /:supplierId?turno=asignado o ?turno=liberado &cantidad=
-router.post('/:supplierId', async (req,res, next) => {
-  const {supplierId} = req.params;
-  const {turno, cantidad} = req.query;
-  
-  let cantd;
-  if (!cantidad) cantd=1;
-  else cantd=cantidad
-  
+router.delete("/:id", async (req, res, next ) => {
+
   try{
-  
-    var modelo = await Supplier.findByPk(supplierId,{
-      include: [{
-        model: Service
-      }]
-    });
-  
-    let servicesId = modelo.Services.map(s => {
-      return s.id
-    });
-  
-  if(turno === 'asignado'){
-    if(modelo.stock-cantd < 0) return res.status(400).send('No hay más turnos disponibles');
-  
-    await Supplier.update({
-      stock: modelo.stock - cantd
-    },{
-      where:{
-        id: supplierId 
+      const { id } = req.params;
+
+      await Service.destroy({
+          where: {
+              id
+          }
+      })
+
+      return res.status(200).json("El servicio ha sido elimiando satisfactoriamente!");
+
+  }catch(error){
+    console.log(error)
+      next(error)
+  }
+})
+
+router.put("/:id", async (req, res, next) => {
+
+  try{
+
+    const { id } = req.params;
+
+    const { name, price, description, image, categoryId, suppliersId} = req.body;
+
+    const searchService = await Service.findByPk(id,{
+      include: {
+        model: Category
       }
-    });
+    })
+
+    if(!searchService) return res.status(404).json("No existe dicho servicio");
+
+    if(name){
+      await Service.update({
+        serviceType: name
+      },{
+        where: { id }
+      })
+    }
+
+    if(price){
+      await Service.update({
+        pricePerHour: price
+      },{
+        where: { id }
+      })
+    }
+
+    if(description){
+      await Service.update({
+        description: description
+      },{
+        where: { id }
+      })
+    }
+
+    if(categoryId){
+
+      await searchService.setCategory(categoryId);
+
+    }
+
+    if(suppliersId){
+      
+      await searchService.addSupplier(suppliersId)
+    }
+
+    return res.status(200).json("Actualización del servicio exitosa!");
+
+  }catch(error){
+    next(error)
   }
-  
-  if(turno === 'liberado'){
-    if(modelo.stock >= 8) return res.status(400).send('No se permite agregar más turnos');
-  
-    await Supplier.update({
-      stock: modelo.stock + cantd
-    },{
-      where:{
-        id: supplierId 
-      }
-    });
-  }
-  for(let i=0; i<servicesId.length;i++){
-    let acum=0;
-    const service = await Service.findByPk(servicesId[i],{
-      include: [{
-        model: Supplier
-      }]
-    });
-  
-  service.Suppliers?.map(s => {
-    acum=acum+s.stock
-  });
-  
-  if(acum === 0) {
-    await Service.update({
-      disponible: false
-    }, {
-      where:{
-        id: servicesId[i]
-      }
-    });
-  } else {
-    await Service.update({
-      disponible: true
-    }, {
-      where:{
-        id: servicesId[i]
-      }
-    });
-  }
-  }
-    return res.status(201).send(`Turno ${turno}`)
-  }
-  catch(e){
-    console.log(e);
-    return res.status(500).send(e)
-  }
-  
-  });
+})
   
 module.exports = router;

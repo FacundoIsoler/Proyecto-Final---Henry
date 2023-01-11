@@ -1,10 +1,17 @@
-const { User } = require("../db");
+const { User, UserRol } = require("../db");
+const { UniqueConstraintError } = require("sequelize");
+const { DuplicatedRecord } = require("../errors");
 
 const add = async (
   { name, nickname, given_name, family_name, picture, email, email_verified },
   user_role = "User"
 ) => {
   try {
+    let dbUserRol = await UserRol.findOne({ where: { name: user_role } });
+    // se mando un rol inexistente, buscamos el rol user
+    if (!dbUserRol)
+      dbUserRol = await UserRol.findOne({ where: { name: "User" } });
+
     return await User.create({
       name,
       nickname,
@@ -13,7 +20,7 @@ const add = async (
       picture,
       email,
       email_verified,
-      UserRolName: user_role,
+      UserRolId: dbUserRol.id,
     });
   } catch (error) {
     console.error(error);
@@ -41,8 +48,10 @@ const findById = async (id) => {
 
 const getUserRole = async (id) => {
   try {
-    const user = await User.findByPk(id);
-    return user.UserRolName;
+    const user = await User.findByPk(id, {
+      include: { model: UserRol, attributes: ["name"] },
+    });
+    return user.UserRol.name;
   } catch (error) {
     console.error(error);
     throw error;
@@ -51,8 +60,13 @@ const getUserRole = async (id) => {
 
 const setUserRole = async (id, user_role) => {
   try {
+    let dbUserRol = await UserRol.findOne({ where: { name: user_role } });
+    // se mando un rol inexistente, buscamos el rol user
+    if (!dbUserRol)
+      dbUserRol = await UserRol.findOne({ where: { name: "User" } });
+
     const user = await User.update(
-      { UserRolName: user_role },
+      { UserRolId: dbUserRol.id },
       { where: { id } }
     );
 
@@ -95,6 +109,10 @@ const update = async (
 
     return await findById(id);
   } catch (error) {
+    // si es uniqueconstraint quiere poner un mail ya usado
+    if (error instanceof UniqueConstraintError)
+      throw new DuplicatedRecord(email, "User", "UserController", "update");
+
     console.error(error);
     throw error;
   }

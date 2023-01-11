@@ -1,4 +1,6 @@
 const { Router } = require("express");
+const { uploadMulter, uploadImage } = require ('../controllers/cloudinaryController');
+const fs = require("fs-extra");
 const router = Router();
 const { Detail,  User, UserRol} = require("../db.js");
 
@@ -32,7 +34,11 @@ router.get("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
+    
+  console.log(req.body);
+
   const { idModified, idPetitioner, userName, passWord, age, location, adress, phoneNumber, eMail, UserRolBody } = req.body;
+
   try {
     const userBDModified = await User.findAll({
         where: {
@@ -76,6 +82,7 @@ router.put("/", async (req, res) => {
             }
         })
     }
+
     //Update Details
     if (location) {
         await Detail.update({

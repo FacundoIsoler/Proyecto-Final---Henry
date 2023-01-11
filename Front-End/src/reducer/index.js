@@ -1,6 +1,6 @@
 //import {} from "../actions/index"
 
-import { GET_DETAILS, GET_SUPPLIERS, ADD_CART, REMOVE_ITEM, SHOW_CART } from "../Constantes/Constantes";
+import { GET_DETAILS, GET_SUPPLIERS, ADD_CART, REMOVE_ITEM, SHOW_CART, SUMTOTALPRICE, RESTOTALPRICE, GET_TOTAL, ADD_AMOUNT, ADD_PRICE_CART, DELETE_SERVICE_AMOUNT, CART_RESTORE } from "../Constantes/Constantes";
 
 const initialState = {
   services: [],
@@ -17,7 +17,10 @@ const initialState = {
   users: [],
   contracts: [],
   userDetails: [],
-userDB:{}
+  userLog: [],
+  contractDetails: [],
+userDB:{},
+totalPrice: 0
 };
 
 const reducer = (state = initialState, action) => {
@@ -106,6 +109,7 @@ const reducer = (state = initialState, action) => {
       let id = item.id
       localStorage.setItem(id, JSON.stringify(item))
       let services = JSON.parse(localStorage.getItem(id))
+      console.log(localStorage)
 
     
  
@@ -165,6 +169,104 @@ const reducer = (state = initialState, action) => {
             ...state,
             userDetails: action.payload
           }
+        case 'GET_USER_LOG':
+          return {
+            ...state,
+            userLog: action.payload
+          }
+
+        case SUMTOTALPRICE:
+          let suma = action.payload
+          let auxSum = JSON.parse(localStorage.getItem(suma))
+          let totalSum = state.totalPrice + Number(auxSum.pricePerHour)
+          localStorage.setItem("total", JSON.stringify(totalSum))
+          // let totalSum = JSON.parse(localStorage.getItem("total"))
+
+          return {
+            ...state,
+            totalPrice: state.totalPrice + Number(auxSum.pricePerHour)
+          }
+          case RESTOTALPRICE:
+            let resta = action.payload    
+            let auxRest = JSON.parse(localStorage.getItem(resta))  
+            let totalRest =  state.totalPrice - Number(auxRest.pricePerHour)
+            localStorage.setItem("total", JSON.stringify(totalRest))
+            // let totalRest = JSON.parse(localStorage.getItem("total"))
+            
+    
+          return {
+            ...state,
+            totalPrice: state.totalPrice - Number(auxRest.pricePerHour)
+            } 
+            case GET_TOTAL:
+              // let total = state.totalPrice
+              let total = JSON.parse(localStorage.getItem("total"))
+              // let totalMap = localStorage.map((e) => {return console.log(e)} )
+             
+              return{
+                ...state,
+                totalPrice: total
+                        }
+
+              case ADD_PRICE_CART:
+                let getTotal = JSON.parse(localStorage.getItem("total"))
+                let auxAPC = Number(getTotal) + Number(action.payload)
+                localStorage.setItem("total", JSON.stringify(auxAPC))
+               let newtotal = JSON.parse(localStorage.getItem("total"))
+               console.log(newtotal)
+              return {
+                  ...state,
+                  // totalPrice: newtotal
+              }          
+
+             case ADD_AMOUNT:
+           
+              let amountCostumer = action.amount
+              let id2 = action.id
+              let services2 = JSON.parse(localStorage.getItem(id2)) 
+              services2.amount += amountCostumer
+              let newTotal = Number(services2.amount)*Number(services2.pricePerHour)
+              console.log(newTotal)
+              localStorage.setItem(id2, JSON.stringify(services2))
+              let found = state.cart.find(e => e.id === id2)
+              let index = state.cart.indexOf(found)
+              state.cart[index].amount = services2.amount
+         
+              
+
+
+         
+              return {
+                ...state,
+                cart: [...state.cart]
+                
+              }     
+              
+          
+              case DELETE_SERVICE_AMOUNT:
+                let restaService = action.payload
+                let getLHTotal = JSON.parse(localStorage.getItem("total"))   
+               
+                let afterRest = Number(getLHTotal) - Number(restaService)
+                localStorage.setItem("total", JSON.stringify(afterRest))
+                let deleteTotal = JSON.parse(localStorage.getItem("total"))
+              return {
+                ...state,
+                totalPrice: deleteTotal
+              }
+              case CART_RESTORE:
+                localStorage.setItem("total", JSON.stringify(0))
+                let restorTotal = JSON.parse(localStorage.getItem("total"))
+                return{
+                  ...state,
+                  totalPrice: restorTotal
+                }
+      case "GET_CONTRACT_DETAILS":
+        return {
+          ...state,
+          contractDetails: action.payload
+        }
+
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-const { DataTypes, NOW } = require("sequelize");
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
   sequelize.define("Contract", {
@@ -9,11 +9,11 @@ module.exports = (sequelize) => {
     },
     date: {
       type: DataTypes.DATE,
-      default: NOW,
+      defaultValue: DataTypes.NOW,
     },
     status: {
       type: DataTypes.STRING,
-      default: "CREADA",
+      defaultValue: "CREADA",
     },
   });
 };

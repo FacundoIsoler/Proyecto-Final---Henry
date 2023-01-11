@@ -92,4 +92,36 @@ console.log('body',req.body)
   }
 );
 
+router.put("/:id", async (req, res, next) => {
+
+  const { isAuth, name, cuit, description, logo, location, adress, phoneNumber, eMail } = req.body;
+  const { id } = req.params;
+
+  console.log(isAuth)
+  
+  if(id && !name && !cuit && !description && !logo && !location && !adress && !phoneNumber && !eMail){
+    try{
+  
+      const search = await SupplierController.findById(id);
+
+      const changeAuth = await SupplierController.update(id, {
+        name: search.name,
+        cuit: search.cuit,
+        description: search.description,
+        logo: search.logo,
+        location: search.Detail.location,
+        adress: search.Detail.adress,
+        phoneNumber: search.Detail.phoneNumber,
+        eMail: search.Detail.eMail,
+        isAuthorized: isAuth
+      })
+    
+      return res.status(200).json(search);
+  
+    }catch(error){
+      next(error)
+    }
+  }
+})
+
 module.exports = router;

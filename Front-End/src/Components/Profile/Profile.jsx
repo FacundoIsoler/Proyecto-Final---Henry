@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useAuth0 } from "@auth0/auth0-react";
 import { NavLink } from "react-router-dom";
 import s from "./Profile.module.css";
-import { getContracts, updateImageProfile } from "../../actions";
+import { getContracts, getUserDetails, updateImageProfile, getAllServices } from "../../actions";
 import { useEffect } from "react";
 import axios from "axios";
 import SuppliersList from "./SuppliersList/SuppliersList";
@@ -11,6 +11,7 @@ import UsersList from "./UsersList/UserList";
 import ContractList from "./ContractList/ContractList";
 import ServicesList from "./ServicesList/ServicesList";
 import CategoriesList from "./CategoriesList/CategoriesList";
+import { FormServices } from "../FormServices/FormServices";
 
 
 export default function Profile() {
@@ -27,6 +28,12 @@ console.log(user)
 
  const [setApiResponse] = useState("");
  const [tag, setTag] = useState("Proveedores");
+
+ const[modal, setModal] = useState(false);
+
+ useEffect( () => {
+  dispatch(getAllServices());
+}, [dispatch, modal])
 
  // como getIdTokenClaims es asincrono, debemos usar useEffect para
  // manejarlo adecuadamente
@@ -85,7 +92,11 @@ console.log(user)
 
 useEffect( () => {
   dispatch(getContracts());
-},[dispatch])
+  dispatch(getUserDetails(user.id, true));
+},[dispatch, user.id])
+
+const userLog = useSelector(state => state.userLog);
+const role = user.user_role || userLog;
 
 const onSubmit = (e) => {
   e.preventDefault();
@@ -109,13 +120,13 @@ const tagHandler = (e) => {
           <li value="Suppliers" onClick={ (e) => tagHandler(e)}>Proveedores</li>
           <li value="Services" onClick= { (e) => tagHandler(e)}>Servicios</li>
           <li value="Orders" onClick={ (e) => tagHandler(e)}>Ordenes de compra</li>
-          {/* {user.user_role === "Admin" ||
-          user.user_role === "SuperAdmin" ? */}
+          {role === "Admin" ||
+          role === "SuperAdmin" ?
           <>
             <li value="Users" onClick={ (e) => tagHandler(e)}>Usuarios</li>
             <li value="categories" onClick={ (e) => tagHandler(e)}>Categorias</li>
-            {/* : null} */}
           </>
+            : null}
         </ul>
       </nav>
       {/* {console.log(userDB)} */}
@@ -146,7 +157,7 @@ const tagHandler = (e) => {
 
         <div className={s.categories}>
           {tag === "Proveedores" ? <SuppliersList/> : null}
-          {tag === "Servicios" ? <ServicesList/> : null}
+          {tag === "Servicios" ? <ServicesList openModal={setModal} /> : null}
           {tag === "Usuarios" ? <UsersList/> : null}
           {tag === "Ordenes de compra" ? <ContractList/> : null}
           {tag === "Categorias" ? <CategoriesList/> : null}
@@ -156,7 +167,7 @@ const tagHandler = (e) => {
           <img src={user.picture} alt="" />
          {/*  <h2>Te logueaste con exito </h2> */}
           <h2 className={s.rolTitle}>En este sitio sos:</h2>
-          <p className={s.rol}>{user.user_role}</p>
+          <p className={s.rol}>{role}</p>
           {/* <p><code style={{'fontSize': 'large'}}>{JSON.stringify(apiResponse)}</code></p> */}
           {/* <p style={{'fontSize': 'xx-large'}}>{apiResponse}</p> */}
           <div>Mi carrito</div>
@@ -180,7 +191,13 @@ const tagHandler = (e) => {
             </NavLink>
           </button>
         </div>
-      </div>  
+      </div> 
+
+      <div className={ modal ? s.modalOpen : s.modalClose }>
+
+        <FormServices typeForm={"create"} close={setModal}></FormServices>
+
+      </div>
     </div>
   );
 }

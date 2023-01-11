@@ -18,6 +18,8 @@
 .picture img{
   border-radius: 15px;
   border: 1px solid rgba(0, 0, 0, 0.61);
+  width: 250px;
+  height: 250px;
 }
 
 .card{
@@ -56,4 +58,21 @@
 
 .optionsButton{
   margin: 0 1%;
+}
+
+.button{
+  display:flex;
+  background: transparent;
+  background-image: url('https://cdn-icons-png.flaticon.com/128/1160/1160119.png');
+  background-size: cover;
+  background-position: center;
+
+  border: none;
+
+  width: 30px;
+  height: 30px;
+   margin-top: 0.5em;
+   margin-left: 12em;
+  transition: all 0.5s;
+  cursor: pointer;
 }

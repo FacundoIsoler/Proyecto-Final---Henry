@@ -31,6 +31,7 @@ export const ServicesDetail = () => {
         suppliers={serviceDetail[0].Suppliers}
         img={serviceDetail[0].representative_image}
         disponible={serviceDetail[0].disponible}
+        params = {params.d}
       />
     </div> : null
   );
